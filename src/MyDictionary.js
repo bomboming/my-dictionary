@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import { Route, Link } from "react-router-dom"; //Route, Link 컴포넌트 불러오기
+
 const MyDictionary = (props) => {
   return (
     <Container>
@@ -15,7 +17,8 @@ const MyDictionary = (props) => {
         <p style={{ color: "#4469FD" }}>예시입니다.</p>
       </div>
       <button>
-        <i class="fas fa-plus "></i>
+        {/* Link연결 */}
+      <Link to="/AddWord"><i class="fas fa-plus "></i></Link>
       </button>
     </Container>
   );
