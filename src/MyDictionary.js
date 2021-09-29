@@ -43,7 +43,10 @@ const Container = styled.div`
   padding: 16px;
   border: 1px solid #ddd;
   border-radius: 15px;
-  position:relative;
+
+  overflow:scroll;
+  ::-webkit-scrollbar{
+    display: none;}
 
   h1 {
     color: #1F1D28;
@@ -64,6 +67,7 @@ const Container = styled.div`
     padding: 5px;
     margin: 8px;
     background-color: #FBC645;
+  
     
     h6{
         margin:auto;
@@ -84,8 +88,8 @@ const Container = styled.div`
     border:none;
     cursor:pointer;
     position: absolute;
-    right:24px;
-    bottom:24px;
+    right:37%;
+    bottom:11%;
 
     i{
         font-size:3.5em;
