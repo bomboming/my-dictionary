@@ -1,24 +1,34 @@
 import React from "react";
 import styled from "styled-components";
-
 import { Route, Link } from "react-router-dom"; //Route, Link 컴포넌트 불러오기
+import { useSelector } from "react-redux";
 
 const MyDictionary = (props) => {
+  const dictionary = useSelector((state) => state.dictionary.list); //업데이트 된 것을 받아온다.
+  console.log(dictionary);
+
   return (
     <Container>
       <h1>MY DICTIONARY</h1>
       <hr />
-      <div>
-        <h6>단어</h6>
-        <p style={{ fontWeight: "800" }}>단어입니다.</p>
-        <h6>설명</h6>
-        <p>설명입니다.</p>
-        <h6>예시</h6>
-        <p style={{ color: "#4469FD" }}>예시입니다.</p>
-      </div>
+      {dictionary.map((word, index) => {
+        return (
+          <div key={word.word}>
+            <h6>단어</h6>
+            <p style={{ fontWeight: "800" }}>{word.word}</p>
+            <h6>설명</h6>
+            <p>{word.explain}</p>
+            <h6>예시</h6>
+            <p style={{ color: "#4469FD" }}>{word.example}</p>
+          </div>
+        );
+      })}
+
       <button>
         {/* Link연결 */}
-      <Link to="/AddWord"><i class="fas fa-plus "></i></Link>
+        <Link to="/AddWord">
+          <i class="fas fa-plus "></i>
+        </Link>
       </button>
     </Container>
   );

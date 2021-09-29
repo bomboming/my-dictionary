@@ -1,20 +1,41 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom"; //useHistory Hook 사용
+import { useDispatch } from "react-redux";
+import { createWordCard } from "./redux/modules/dictionary"; //액션생성함수 불러오기
 
 const AddWord = (props) => {
+  const dispatch = useDispatch();
+  const history = useHistory(); //useHistory Hook 사용
+
+  // input에 있는 값들을 가지고오겠다. 초기값을 null로하겠다.
+  const word = useRef(null);
+  const explain = useRef(null);
+  const example = useRef(null);
+
   return (
-<Container>
+    <Container>
       <h1>단어 추가하기</h1>
       <hr />
       <div>
         <h6>단어</h6>
-        <input type="text" />
+        <input type="text" placeholder="단어를 입력하세요." ref={word} />
         <h6>설명</h6>
-        <input type="text" />
+        <input type="text" placeholder="설명을 입력하세요." ref={explain} />
         <h6>예시</h6>
-        <input type="text" />
+        <input type="text" placeholder="예시를 입력하세요." ref={example} />
       </div>
-      <button>
+      <button
+        onClick={() => {
+          const wordCard = {
+            word: word.current.value,
+            explain: explain.current.value,
+            example: example.current.value,
+          };
+          dispatch(createWordCard(wordCard));
+          history.push("/");
+        }}
+      >
         추가하기
       </button>
     </Container>
