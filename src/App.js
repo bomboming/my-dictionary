@@ -6,16 +6,20 @@ import { Route, Switch } from "react-router-dom";
 import MyDictionary from "./MyDictionary";
 import AddWord from "./AddWord";
 import NotFound from "./NotFound";
+import Detail from "./Detail";
 
-function App() {
+function App(props) {
   return (
     <AppWrap>
       <Switch>
-        <Route path="/" exact>
+        <Route exact path="/" exact>
           <MyDictionary />
         </Route>
-        <Route path="/addword">
+        <Route exact path="/addword">
           <AddWord />
+        </Route>
+        <Route exact path="/detail/:id">
+          <Detail />
         </Route>
         <Route>
           <NotFound />
