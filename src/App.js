@@ -8,17 +8,7 @@ import AddWord from "./AddWord";
 import NotFound from "./NotFound";
 import Detail from "./Detail";
 
-import { db } from "./firebase";
-import { collection, getDoc, getDocs, addDoc } from "firebase/firestore";
-
 function App(props) {
-  React.useEffect(async () => {
-    const query = await getDocs(collection(db, "dictionary"));
-    query.forEach((doc) => {
-      console.log("이거확인", doc.id, doc.data());
-    });
-  }, []);
-
   return (
     <AppWrap>
       <Switch>

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const Card = (props) => {
   const history = useHistory();
@@ -32,7 +32,7 @@ const Card = (props) => {
 };
 
 const Container = styled.div`
-  height: 10rem;
+  height: 16rem;
   border-radius: 0.5rem;
   padding: 1rem;
   margin: 1rem;
@@ -41,10 +41,12 @@ const Container = styled.div`
   h6 {
     margin: auto;
     text-decoration: #64c67e wavy underline;
+    font-size: 1.5rem;
   }
 
   p {
     margin: 5px;
+    font-size: 2rem;
   }
 `;
 

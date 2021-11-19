@@ -1,23 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useParams, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { removeWordCard } from "./redux/modules/dictionary";
+import { actionCreators } from "./redux/modules/dictionary";
 
 const Detail = (props) => {
   const history = useHistory();
-  const dispatch = useDispatch();
+  //   const dispatch = useDispatch();
   const dictionary = useSelector((state) => state.dictionary.list); //업데이트 된 것을 받아온다.
   console.log("상세", dictionary);
   // url 파라미터에서 인덱스 가져오기
   const params = useParams();
   const dictionary_index = params.id;
-  console.log("index", dictionary_index);
 
-  const deleteWordList = () => {
-    dispatch(removeWordCard(dictionary_index));
-    history.push("/");
-  };
+  //   const deleteWordList = () => {
+  //     dispatch(
+  //       actionCreators.deleteDictionaryFB(dictionary[dictionary_index].id)
+  //     );
+  //     history.push("/");
+  //   };
 
   return (
     <Container>
@@ -25,13 +26,20 @@ const Detail = (props) => {
       <hr />
       <Content>
         <h6>단어</h6>
-        <input type="text" value={dictionary[dictionary_index].word} />
+        <p>{dictionary[dictionary_index].word}</p>
         <h6>설명</h6>
-        <input type="text" value={dictionary[dictionary_index].explain} />
+        <p>{dictionary[dictionary_index].explain}</p>
         <h6>예시</h6>
-        <input type="text" value={dictionary[dictionary_index].example} />
-        <button>수정하기</button>
-        <button onClick={deleteWordList}>삭제하기</button>
+        <p>{dictionary[dictionary_index].example}</p>
+        {/* <button onClick={updateWordList}>수정하기</button> */}
+        {/* <button onClick={deleteWordList}>삭제하기</button> */}
+        <button
+          onClick={() => {
+            history.goBack();
+          }}
+        >
+          뒤로가기
+        </button>
       </Content>
     </Container>
   );
@@ -72,7 +80,7 @@ const Content = styled.div`
     font-size: 2rem;
   }
 
-  input {
+  p {
     margin: auto;
     font-size: 2rem;
     margin-bottom: 1rem;

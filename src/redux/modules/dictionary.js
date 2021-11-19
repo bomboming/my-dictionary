@@ -1,4 +1,14 @@
 // dictionary.js
+import { db } from "../../firebase";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 
 // Actions(Action type을 설정해 주는 곳)
 const LOAD = "LOAD";
@@ -8,19 +18,12 @@ const REMOVE = "REMOVE";
 
 //초기값 설정
 const initialState = {
-  list: [
-    // {
-    //   id: 0,
-    //   word: "단어입니다.",
-    //   explain: "설명입니다.",
-    //   example: "예시입니다.",
-    // },
-  ],
+  list: [],
 };
 
 // Action Creators
-export function loadWordCard(dictionary) {
-  return { type: LOAD, dictionary };
+export function loadWordCard(dictionary_list) {
+  return { type: LOAD, dictionary_list };
 }
 
 export function createWordCard(dictionary) {
@@ -35,11 +38,60 @@ export function removeWordCard(dictionary_index) {
   return { type: REMOVE, dictionary_index };
 }
 
+// 미들웨어
+export const loadDictionaryFB = () => {
+  return async function (dispatch) {
+    const dictionary_data = await getDocs(collection(db, "dictionary"));
+    const dictionary_list = [];
+    dictionary_data.forEach((dictionary) => {
+      dictionary_list.push({ id: dictionary.id, ...dictionary.data() });
+    });
+    // console.log(dictionary_list);
+    dispatch(loadWordCard(dictionary_list));
+  };
+};
+
+export const addDictionaryFB = (wordCard) => {
+  return async function (dispatch) {
+    const docRef = await addDoc(collection(db, "dictionary"), wordCard);
+    const dictionary_data = { id: docRef.id, ...wordCard };
+    // console.log(dictionary_data);
+    dispatch(createWordCard(dictionary_data));
+  };
+};
+
+export const updateDictionaryFB = (dictionary_id) => {
+  return async function (dispatch) {
+    const docRef = doc(db, "dictionary", dictionary_id);
+    await updateDoc(docRef);
+    console.log("아이디", dictionary_id);
+    // dispatch(createWordCard(dictionary_data));
+  };
+};
+
+export const deleteDictionaryFB = (dictionary_id) => {
+  return async function (dispatch, getState) {
+    if (!dictionary_id) {
+      window.alert("아이디가 없네요!");
+      return;
+    }
+    const docRef = doc(db, "dictionary", dictionary_id);
+    await deleteDoc(docRef);
+
+    const _dictionary_list = getState().dictionary.list;
+    const dictionary_index = _dictionary_list.findIndex((b) => {
+      return b.id === dictionary_id;
+    });
+
+    dispatch(removeWordCard(dictionary_index));
+  };
+};
+
 // Reducer
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case "LOAD":
-      return state;
+      return { list: action.dictionary_list };
 
     case "CREATE": {
       const new_dictionary = [...state.list, action.dictionary];
@@ -64,34 +116,16 @@ export default function reducer(state = initialState, action = {}) {
   }
 }
 
-// 미들웨어
-// export const loadDictionaryFB = () => {
-//   return async function (dispatch) {
-//     const dictionary_data = await getDocs(collection(db, “dictionary”));
-//     let dictionary_list = [];
-//     dictionary_data.forEach((dictionary) => {
-//       dictionary_list.push({ ...dictionary.data() });
-//     });
-//     console.log(dictionary_list);
-//     dispatch(loadDictionary(dictionary_list));
-//   };
-// };
-// export const addDictionaryFB = (dictionary_list) => {
-//   return async function (dispatch) {
-//     const dictionary_db = await addDoc(
-//       collection(db, “dictionary”),
-//       dictionary_list
-//     );
-//     console.log(dictionary_list);
-//   };
-// };
-
 //action creator export
 const actionCreators = {
   loadWordCard,
   createWordCard,
   updateWordCard,
   removeWordCard,
+  loadDictionaryFB,
+  addDictionaryFB,
+  // updateDictionaryFB,
+  deleteDictionaryFB,
 };
 
 export { actionCreators };

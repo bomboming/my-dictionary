@@ -1,23 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-
+import { actionCreators } from "./redux/modules/dictionary";
 import Card from "./Card";
 
 const MyDictionary = (props) => {
   const history = useHistory();
+  const dispatch = useDispatch();
+
   const data = useSelector((state) => state.dictionary.list);
-  const [wordList, setWordList] = useState([]);
-
-  console.log("확인", wordList);
-
-  const loadWordList = () => {
-    setWordList([...data]);
-  };
 
   useEffect(() => {
-    loadWordList();
+    dispatch(actionCreators.loadDictionaryFB());
   }, []);
 
   return (
@@ -25,8 +20,8 @@ const MyDictionary = (props) => {
       <h1>MY DICTIONARY</h1>
       <hr />
       <Content>
-        {wordList.map((item, idx) => {
-          return <Card {...item} index={idx} key={idx} />;
+        {data.map((item, idx) => {
+          return <Card {...item} index={idx} key={idx} data={data} />;
         })}
       </Content>
       <AddBtn
@@ -72,22 +67,6 @@ const Content = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
-
-  /* div {
-    border-radius: 5px;
-    padding: 5px;
-    margin: 8px; */
-  /* background-color: #fbc645; */
-  /* 
-    h6 {
-      margin: auto;
-      text-decoration: #64c67e wavy underline;
-    }
-
-    p {
-      margin: 5px;
-    }
-  } */
 `;
 
 const AddBtn = styled.button`

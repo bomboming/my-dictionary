@@ -1,8 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom"; //useHistory Hook 사용
 import { useDispatch } from "react-redux";
-import { createWordCard } from "./redux/modules/dictionary"; //액션생성함수 불러오기
+import { actionCreators } from "./redux/modules/dictionary"; //액션생성함수 불러오기
 
 const AddWord = (props) => {
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const AddWord = (props) => {
       explain: explain,
       example: example,
     };
-    dispatch(createWordCard(wordCard));
+    dispatch(actionCreators.addDictionaryFB(wordCard));
     history.push("/");
   };
 
